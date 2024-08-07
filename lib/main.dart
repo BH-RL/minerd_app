@@ -20,7 +20,7 @@ import 'screens/horoscopo_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/tipos_visitas_screen.dart';
-import 'screens/registro_visita_screen.dart'; // Verifica que el archivo está correctamente ubicado y nombrado
+import 'screens/registro_visita_screen.dart';
 import 'utils/theme.dart';
 
 import 'models/visita_model.dart';
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         '/lista-visitas': (context) => visitas.ListaVisitasScreen(),
         '/detalle-incidencia': (context) => DetalleIncidenciaScreen(),
         '/registro-visita': (context) =>
-            RegistroVisitaScreen(), // Verifica que esta pantalla esté definida e importada correctamente
+            RegistroVisitaScreen(), 
         '/consulta-escuela': (context) => ConsultaEscuelaScreen(),
         '/consulta-director': (context) => ConsultaDirectorScreen(),
         '/acerca-de': (context) => AcercaDeScreen(),

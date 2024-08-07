@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minerd_app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/tecnico_provider.dart';
 
@@ -138,10 +139,10 @@ class RegisterScreen extends StatelessWidget {
                     );
 
                     if (isRegistered) {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, '/');
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Error en el registro'),
+                        content: Text('Error en el registro. El usuario ya existe.'),
                       ));
                     }
                   }
@@ -151,7 +152,7 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.pushNamed(context, '/');
                 },
                 child: Text('Iniciar Sesión'),
               ),

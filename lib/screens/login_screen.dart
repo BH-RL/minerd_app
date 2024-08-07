@@ -34,25 +34,7 @@ class LoginScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                final tecnicoProvider =
-                    Provider.of<TecnicoProvider>(context, listen: false);
-                final cedula = _cedulaController.text;
-                final clave = _claveController.text;
-
-                print('Enviando datos: cedula=$cedula, clave=$clave');
-
-                bool isAuthenticated =
-                    await tecnicoProvider.loginTecnico(cedula, clave);
-
-                if (isAuthenticated) {
-                  Navigator.pushReplacementNamed(context, '/home');
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Cédula o contraseña incorrectos'),
-                  ));
-                }
-              },
+              onPressed: () => _login(context),
               child: Text('Iniciar Sesión'),
             ),
             SizedBox(height: 20),
@@ -66,5 +48,35 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _login(BuildContext context) async {
+    final tecnicoProvider =
+        Provider.of<TecnicoProvider>(context, listen: false);
+    final cedula = _cedulaController.text;
+    final clave = _claveController.text;
+
+    print('Enviando datos: cedula=$cedula, clave=$clave');
+
+    try {
+      final isLoggedIn = await tecnicoProvider.loginTecnico(cedula, clave);
+
+      if (isLoggedIn) {
+        print('Login successful');
+        print('Logged in tecnico: ${tecnicoProvider.loggedInTecnico?.toMap()}');
+        print('Token: ${tecnicoProvider.token}');
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        print('Login failed');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Cédula o contraseña incorrectos'),
+        ));
+      }
+    } catch (e) {
+      print('Error during login: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error al iniciar sesión. Por favor, intente de nuevo.'),
+      ));
+    }
   }
 }

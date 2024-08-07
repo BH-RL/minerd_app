@@ -6,6 +6,7 @@ import '../models/tecnico_model.dart';
 class TecnicoProvider with ChangeNotifier {
   Tecnico? _loggedInTecnico;
   String _token = '';
+  
 
   Tecnico? get loggedInTecnico => _loggedInTecnico;
   String get token => _token;
@@ -36,9 +37,6 @@ Future<bool> registerTecnico(
     final data = json.decode(response.body);
 
     if (data['exito'] == true) {
-      // You might want to set _loggedInTecnico here if the API returns user data
-      // _loggedInTecnico = Tecnico.fromMap(data['datos']);
-      // _token = data['token']; // If the API returns a token
       notifyListeners();
       return true;
     } else {
@@ -63,7 +61,7 @@ Future<bool> registerTecnico(
 
       if (data['exito'] == true) {
         _loggedInTecnico = Tecnico.fromMap(data['datos']);
-        _token = data['token'];
+        _token = data['datos']['token'];
         notifyListeners();
         return true;
       } else {
@@ -73,7 +71,7 @@ Future<bool> registerTecnico(
       return false;
     }
   }
-
+  
   void logout() {
     _loggedInTecnico = null;
     _token = '';
