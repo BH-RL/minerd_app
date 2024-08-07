@@ -14,8 +14,8 @@ class _ConsultaEscuelaScreenState extends State<ConsultaEscuelaScreen> {
   void _consultarEscuela() async {
     final codigo = _codigoController.text;
     if (codigo.isNotEmpty) {
-      final url = Uri.parse(
-          'https://adamix.net/minerd/def/consulta_escuela.php?codigo=$codigo');
+     final url = Uri.parse(
+    'https://adamix.net/minerd/minerd/centros.php');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {

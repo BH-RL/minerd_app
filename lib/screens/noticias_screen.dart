@@ -17,8 +17,7 @@ class _NoticiasScreenState extends State<NoticiasScreen> {
   }
 
   void _fetchNoticias() async {
-    final url =
-        Uri.parse('https://remolacha.net/wp-json/wp/v2/posts?search=minerd');
+    final url = Uri.parse('https://adamix.net/minerd/def/noticias.php');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -43,14 +42,14 @@ class _NoticiasScreenState extends State<NoticiasScreen> {
         itemBuilder: (context, index) {
           final noticia = _noticias[index];
           return ListTile(
-            title: Text(noticia['title']['rendered']),
-            subtitle: Text(noticia['date']),
+            title: Text(noticia['title']),
+            subtitle: Text(noticia['description']),
+            leading: Image.network(noticia['image']),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      DetalleNoticiaScreen(url: noticia['link']),
+                  builder: (context) => DetalleNoticiaScreen(url: noticia['link']),
                 ),
               );
             },

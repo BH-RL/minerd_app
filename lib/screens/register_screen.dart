@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/tecnico_provider.dart';
-import '../models/tecnico_model.dart';
 
 class RegisterScreen extends StatelessWidget {
+  RegisterScreen({Key? key}) : super(key: key);
+
+  final _formKey = GlobalKey<FormState>();
+
   final _cedulaController = TextEditingController();
   final _nombreController = TextEditingController();
   final _apellidoController = TextEditingController();
@@ -20,74 +23,140 @@ class RegisterScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _cedulaController,
-              decoration: const InputDecoration(labelText: 'Cédula'),
-            ),
-            TextField(
-              controller: _nombreController,
-              decoration: const InputDecoration(labelText: 'Nombre'),
-            ),
-            TextField(
-              controller: _apellidoController,
-              decoration: const InputDecoration(labelText: 'Apellido'),
-            ),
-            TextField(
-              controller: _claveController,
-              decoration: const InputDecoration(labelText: 'Contraseña'),
-              obscureText: true,
-            ),
-            TextField(
-              controller: _correoController,
-              decoration: const InputDecoration(labelText: 'Correo'),
-            ),
-            TextField(
-              controller: _telefonoController,
-              decoration: const InputDecoration(labelText: 'Teléfono'),
-            ),
-            TextField(
-              controller: _fechaNacimientoController,
-              decoration:
-                  const InputDecoration(labelText: 'Fecha de Nacimiento'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final tecnicoProvider =
-                    Provider.of<TecnicoProvider>(context, listen: false);
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _cedulaController,
+                decoration: InputDecoration(labelText: 'Cédula'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la cédula';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _nombreController,
+                decoration: InputDecoration(labelText: 'Nombre'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el nombre';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _apellidoController,
+                decoration: InputDecoration(labelText: 'Apellido'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el apellido';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _claveController,
+                decoration: InputDecoration(labelText: 'Contraseña'),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la contraseña';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _correoController,
+                decoration: InputDecoration(labelText: 'Correo'),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el correo';
+                  }
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                    return 'Por favor ingrese un correo válido';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _telefonoController,
+                decoration: InputDecoration(labelText: 'Teléfono'),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el teléfono';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _fechaNacimientoController,
+                decoration: InputDecoration(labelText: 'Fecha de Nacimiento'),
+                keyboardType: TextInputType.datetime,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la fecha de nacimiento';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    final tecnicoProvider =
+                        Provider.of<TecnicoProvider>(context, listen: false);
+                    final cedula = _cedulaController.text;
+                    final nombre = _nombreController.text;
+                    final apellido = _apellidoController.text;
+                    final clave = _claveController.text;
+                    final correo = _correoController.text;
+                    final telefono = _telefonoController.text;
+                    final fechaNacimiento = _fechaNacimientoController.text;
 
-                // Crea un objeto Técnico con los datos ingresados
-                final nuevoTecnico = Tecnico(
-                  cedula: _cedulaController.text,
-                  nombre: _nombreController.text,
-                  apellido: _apellidoController.text,
-                  clave: _claveController.text,
-                  correo: _correoController.text,
-                  telefono: _telefonoController.text,
-                  fechaNacimiento: _fechaNacimientoController.text,
-                );
+                    print('Enviando datos: '
+                        'cedula=$cedula, '
+                        'nombre=$nombre, '
+                        'apellido=$apellido, '
+                        'clave=$clave, '
+                        'correo=$correo, '
+                        'telefono=$telefono, '
+                        'fechaNacimiento=$fechaNacimiento');
 
-                bool registrado =
-                    await tecnicoProvider.registerTecnico(nuevoTecnico);
+                    bool isRegistered = await tecnicoProvider.registerTecnico(
+                      cedula,
+                      nombre,
+                      apellido,
+                      clave,
+                      correo,
+                      telefono,
+                      fechaNacimiento,
+                    );
 
-                if (registrado) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Técnico registrado exitosamente'),
-                  ));
-
-                  Navigator.pop(context);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(
-                        'Error en el registro. Por favor, revisa los campos.'),
-                  ));
-                }
-              },
-              child: const Text('Registrarse'),
-            ),
-          ],
+                    if (isRegistered) {
+                      Navigator.pushReplacementNamed(context, '/login');
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Error en el registro'),
+                      ));
+                    }
+                  }
+                },
+                child: Text('Registrarse'),
+              ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: Text('Iniciar Sesión'),
+              ),
+            ],
+          ),
         ),
       ),
     );

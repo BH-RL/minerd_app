@@ -28,39 +28,26 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  cupertino_icons: ^1.0.6
+  file_picker: ^5.2.0
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.6
-
-  # Local Database and File Storage
-  sqflite: ^2.0.0+3
-  path_provider: ^2.0.2
-
-  # Multimedia handling
-  image_picker: ^0.8.4+1
-  flutter_sound: ^9.1.5
-  file_picker: ^5.2.0
-
-  # Secure Storage
   flutter_secure_storage: ^5.0.2
-
-  # Geolocation and Maps
+  flutter_sound: ^9.1.5
   geolocator: ^8.0.0
   google_maps_flutter: ^2.0.6
-
-  # HTTP requests for APIs
-  http: ^0.13.4
-
-  # State management
-  provider: ^6.0.0
+  http: ^1.2.2
+  image_picker: ^0.8.4+1
   intl: ^0.19.0
+  path_provider: ^2.0.2
+  provider: ^6.0.0
+  sqflite: ^2.0.0+3
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
   flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true
@@ -70,7 +57,6 @@ flutter:
     - assets/images/background.png
     - assets/images/logo.png
     - assets/images/sample_school.png
-    - assets/images/profile_placeholder.png
     - assets/images/map_marker.png
     - assets/audio/sample_audio.mp3
 

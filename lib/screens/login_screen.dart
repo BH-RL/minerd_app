@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           children: [
             Image.asset(
               'assets/images/logo.png',
-              height: 150, // Ajusta el tamaño según sea necesario
+              height: 150,
             ),
             SizedBox(height: 20),
             TextField(
